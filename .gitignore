@@ -1,0 +1,16 @@
+# Node
+node_modules/
+.expo/
+
+# Java
+target/
+*.class
+*.jar
+
+# Env
+.env
+*.env
+
+# IDE
+.idea/
+.vscode/settings.json
