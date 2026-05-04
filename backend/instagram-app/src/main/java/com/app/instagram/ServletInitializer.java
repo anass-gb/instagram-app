@@ -1,4 +1,4 @@
-package com.translator.darija_translator;
+package com.app.instagram;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

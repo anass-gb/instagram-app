@@ -1,0 +1,37 @@
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: instagram-db
+    restart: always
+    environment:
+      POSTGRES_DB: instagramdb
+      POSTGRES_USER: instagram_user
+      POSTGRES_PASSWORD: anassmhd
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U instagram_user -d instagramdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../../instagram-app
+      dockerfile: Dockerfile
+    container_name: instagram-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # On active explicitement le profil docker ici
+      - SPRING_PROFILES_ACTIVE=docker
+
+volumes:
+  pgdata:
