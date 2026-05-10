@@ -52,7 +52,7 @@ public class UserService {
     public UserResponse mapToUserResponse(User user, Long currentUserId) {
         return UserResponse.builder()
                 .id(user.getId())
-                .username(user.getUsername())
+                .username(user.getRealUsername())
                 .email(user.getEmail())
                 .bio(user.getBio())
                 .profilePicture(user.getProfilePicture())

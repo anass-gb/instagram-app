@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import jakarta.annotation.PostConstruct;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -68,5 +69,10 @@ public class JwtUtils {
                 .getPayload()
                 .getExpiration()
                 .before(new Date());
+    }
+    @PostConstruct
+    public void debug() {
+        System.out.println("JWT SECRET = " + jwtSecret);
+        System.out.println("JWT EXPIRATION = " + jwtExpiration);
     }
 }

@@ -32,6 +32,10 @@ public class Like {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "message_id")
     private Message message;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "story_id")
+    private Story story;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

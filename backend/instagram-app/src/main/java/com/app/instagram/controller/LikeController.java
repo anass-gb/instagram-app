@@ -47,4 +47,21 @@ public class LikeController {
         boolean liked = likeService.toggleMessageLike(messageId, currentUser.getId());
         return ResponseEntity.ok(Map.of("liked", liked));
     }
+    
+    @PostMapping("/story/{storyId}")
+    @Operation(summary = "Like / Unlike une story")
+    public ResponseEntity<Map<String, Boolean>> toggleStoryLike(
+            @PathVariable Long storyId,
+            @AuthenticationPrincipal User currentUser
+    ) {
+
+        boolean liked = likeService.toggleStoryLike(
+                storyId,
+                currentUser.getId()
+        );
+
+        return ResponseEntity.ok(
+                Map.of("liked", liked)
+        );
+    }
 }

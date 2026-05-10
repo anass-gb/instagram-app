@@ -38,7 +38,8 @@ public class User implements UserDetails {
     @Column(name = "is_active")
     @Builder.Default
     private boolean isActive = true;
-
+    
+    
     // ── Relations ──────────────────────────────────────────────────────────
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
@@ -82,10 +83,38 @@ public class User implements UserDetails {
         createdAt = LocalDateTime.now();
     }
 
-    // ── UserDetails ────────────────────────────────────────────────────────
-    @Override public Collection<? extends GrantedAuthority> getAuthorities() { return List.of(); }
-    @Override public boolean isAccountNonExpired()     { return true; }
-    @Override public boolean isAccountNonLocked()      { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled()               { return isActive; }
+ // ── UserDetails ────────────────────────────────────────────────────────
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    public String getRealUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive;
+    }
 }

@@ -16,7 +16,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 2200)
+    @Column(length = 22000)
     private String caption;
 
     @Column(name = "media_url", nullable = false)

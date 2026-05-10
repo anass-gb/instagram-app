@@ -62,4 +62,9 @@ public class StoryService {
                 .isViewed(storyViewRepository.existsByStoryIdAndViewerId(story.getId(), currentUserId))
                 .build();
     }
+    
+    public Story findById(Long id) {
+        return storyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Story introuvable"));
+    }
 }

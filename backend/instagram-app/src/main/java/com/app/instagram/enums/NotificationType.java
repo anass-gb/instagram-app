@@ -11,5 +11,6 @@ public enum NotificationType {
     STORY_VIEW,
     MESSAGE,
     SHARED_POST,
-    SHARED_COMMENT
+    SHARED_COMMENT,
+    LIKE_STORY
 }

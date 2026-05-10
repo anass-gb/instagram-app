@@ -14,6 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
     boolean existsByUsername(String username);
 
-    @Query("SELECT u FROM User u WHERE u.username LIKE %:q% OR u.bio LIKE %:q%")
+    @Query("""
+    		SELECT u FROM User u 
+    		WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :q, '%')) 
+    		   OR LOWER(u.bio) LIKE LOWER(CONCAT('%', :q, '%'))
+    		""")
     List<User> searchUsers(@Param("q") String query);
 }

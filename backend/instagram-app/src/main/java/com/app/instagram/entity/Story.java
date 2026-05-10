@@ -47,7 +47,7 @@ public class Story {
     public void prePersist() {
         createdAt = LocalDateTime.now();
         if (expirationTime == null) {
-            expirationTime = createdAt.plusHours(24);
+            expirationTime = createdAt.plusHours(30);
         }
     }
 

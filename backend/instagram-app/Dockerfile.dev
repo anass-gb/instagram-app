@@ -1,0 +1,17 @@
+FROM eclipse-temurin:21-jdk-alpine
+
+WORKDIR /app
+
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+
+RUN chmod +x mvnw
+
+# Télécharge dépendances une seule fois
+RUN ./mvnw dependency:go-offline
+
+# Le code source sera monté en volume
+EXPOSE 8080
+
+CMD ["./mvnw", "spring-boot:run"]

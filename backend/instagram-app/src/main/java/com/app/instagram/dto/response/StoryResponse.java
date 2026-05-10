@@ -12,5 +12,6 @@ public class StoryResponse {
     private LocalDateTime expirationTime;
     private UserResponse user;
     private long viewsCount;
+    private boolean isLiked;
     private boolean isViewed;
 }
