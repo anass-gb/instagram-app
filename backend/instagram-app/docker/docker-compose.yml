@@ -1,50 +1,80 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  docker-compose.yml
+#  3 services : postgres · backend Spring Boot · frontend Expo
+#
+#  ▶ Lancer tout avec une seule commande :
+#      docker compose up --build
+#
+#  ▶ Arrêter :
+#      docker compose down
+# ─────────────────────────────────────────────────────────────────────────────
+
 services:
+
+  # ── Base de données PostgreSQL ──────────────────────────────────────────────
   postgres:
     image: postgres:16
     container_name: instagram-db
     restart: always
-
     environment:
-      POSTGRES_DB: instagramdb
-      POSTGRES_USER: instagram_user
+      POSTGRES_DB:       instagramdb
+      POSTGRES_USER:     instagram_user
       POSTGRES_PASSWORD: anassmhd
-
     ports:
       - "5432:5432"
-
     volumes:
       - pgdata:/var/lib/postgresql/data
-
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U instagram_user -d instagramdb"]
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout:  5s
+      retries:  5
 
+  # ── Backend Spring Boot ─────────────────────────────────────────────────────
   backend:
     build:
-      context: ../../instagram-app
+      context:    ../../instagram-app
       dockerfile: Dockerfile.dev
-
     container_name: instagram-backend
     restart: unless-stopped
-
     ports:
       - "8080:8080"
-
     depends_on:
       postgres:
         condition: service_healthy
-
     environment:
       SPRING_PROFILES_ACTIVE: docker
-
     volumes:
-      # Sync code local -> container
       - ../../instagram-app:/app
-
-      # Cache Maven
       - ~/.m2:/root/.m2
+
+  # ── Frontend Expo (serveur de dev) ──────────────────────────────────────────
+  frontend:
+    build:
+      context:    ../../instagram-frontend   # ← chemin vers ton dossier frontend
+      dockerfile: Dockerfile.frontend
+    container_name: instagram-frontend
+    restart: unless-stopped
+    ports:
+      - "8081:8081"   # Metro bundler
+      - "19000:19000" # Expo DevTools
+      - "19001:19001" # Expo tunnel
+      - "19002:19002" # Expo inspector
+    depends_on:
+      - backend
+    environment:
+      # L'IP du backend vue depuis le téléphone = IP de la machine hôte
+      # En tunnel mode, l'app se connecte via ngrok → pas besoin d'IP fixe
+      EXPO_DEVTOOLS_LISTEN_ADDRESS: "0.0.0.0"
+      # Désactive le prompt interactif
+      CI: "1"
+    volumes:
+      # Sync code local → container (hot reload)
+      - ../../instagram-frontend:/app
+      # Préserve node_modules du container (évite conflits OS)
+      - /app/node_modules
+    stdin_open: true
+    tty: true
 
 volumes:
   pgdata:
