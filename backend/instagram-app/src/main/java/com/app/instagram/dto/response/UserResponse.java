@@ -16,4 +16,12 @@ public class UserResponse {
     private long followingCount;
     private boolean isFollowing;
     private boolean isBlocked;
+	
+	public String getUsername() {
+	    return this.email;
+	}
+	
+	public String getRealUsername() {
+	    return this.username;
+	}
 }
