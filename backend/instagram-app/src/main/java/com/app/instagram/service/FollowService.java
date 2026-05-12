@@ -32,7 +32,7 @@ public class FollowService {
                     followRepository.save(Follow.builder().follower(follower).following(following).build());
                     notificationService.createNotification(
                             following, follower, NotificationType.FOLLOW, currentUserId,
-                            follower.getUsername() + " a commencé à vous suivre");
+                            follower.getRealUsername() + " a commencé à vous suivre");
                     return true;
                 });
     }

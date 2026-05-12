@@ -47,7 +47,7 @@ public class CommentService {
         if (!post.getUser().getId().equals(userId)) {
             notificationService.createNotification(
                     post.getUser(), user, NotificationType.COMMENT, saved.getId(),
-                    user.getUsername() + " a commenté votre post");
+                    user.getRealUsername() + " a commenté votre post");
         }
 
         return mapToCommentResponse(saved, userId);
